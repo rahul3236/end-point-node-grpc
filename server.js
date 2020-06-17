@@ -18,7 +18,9 @@ function sayHello(call, callback) {
 
 function main() {
   var server = new grpc.Server();
-  server.addService(hello_proto.Hello.service, { sayHello: sayHello });
+  server.addService(hello_proto.Hello.service, { 
+    sayHello: sayHello 
+  });
   server.bind(
     `${process.env.GRPC_HOST || "0.0.0.0"}:${PORT}`,
     grpc.ServerCredentials.createInsecure()
