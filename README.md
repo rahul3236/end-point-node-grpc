@@ -7,8 +7,12 @@
 * Change the directory
 * Install dependencies: `yarn install`
 * To run locally: `npm start`
-* Run `docker build -t grpc_server .` to build the docker image
-* Run `docker run -d -p 50051:50051 grpc_server` to run the container
+
+## Docker
+
+* Install docker using a method suitable for your operating system
+* Run `sudo docker build -t grpc-end-point .` to build the docker image
+* Run `sudo docker run -d -rm -p 50051:50051 grpc-end-point` to run the container
 
 ## Environment Variables
 
