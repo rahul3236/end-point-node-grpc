@@ -12,7 +12,7 @@
 
 * Install docker using a method suitable for your operating system
 * Run `sudo docker build -t grpc-end-point .` to build the docker image
-* Run `sudo docker run -d -rm -p 50051:50051 grpc-end-point` to run the container
+* Run `sudo docker run -d --rm -p 50051:50051 grpc-end-point` to run the container
 
 ## Environment Variables
 
@@ -22,6 +22,6 @@
 ## Testing 
 
 * Running local
-* Sample Code to test the server is located inside client.js file
-* To run the sample code, change to clone repo and run: `node client.js`
+* Sample Code to test the server is located inside `./test/client.js` file
+* To run the sample code: `node ./test/client.js`
 * Server must be started before running the sample code
