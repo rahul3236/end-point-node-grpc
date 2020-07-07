@@ -19,8 +19,8 @@ PROJECT_ID=level01
 IMAGE_NAME=gke-istio-grpc-end-point
 docker tag ${IMAGE_NAME} gcr.io/${PROJECT_ID}/${IMAGE_NAME}
 docker push gcr.io/${PROJECT_ID}/${IMAGE_NAME}
-
 ```
+
 ## Environment Variables
 
 * GRPC_HOST => Host on which grpc server will runs defaults to 0.0.0.0* 
