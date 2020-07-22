@@ -1,6 +1,6 @@
 const grpc = require("grpc");
 const protoLoader = require("@grpc/proto-loader");
-const PROTO_PATH = __dirname + "/helloworld.proto";
+const PROTO_PATH = __dirname + "/../helloworld.proto";
 const os = require('os');
 const name = process.env.NAME || os.hostname;
 

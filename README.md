@@ -11,12 +11,12 @@
 ## Docker
 
 * Install docker using a method suitable for your operating system
-* Run `sudo docker build -t gke-istio-grpc-end-point .` to build the docker image
-* Run `sudo docker run -d --rm -p 50051:50051 grpc-end-point` to run the container
+* Run `sudo docker build -t grpc-endpoint .` to build the docker image
+* Run `sudo docker run -d --rm -p 50051:50051 grpc-endpoint` to run the container
 * Publish to GCP Container Registry:
 ```
 PROJECT_ID=level01
-IMAGE_NAME=gke-istio-grpc-end-point
+IMAGE_NAME=grpc-endpoint
 docker tag ${IMAGE_NAME} gcr.io/${PROJECT_ID}/${IMAGE_NAME}
 docker push gcr.io/${PROJECT_ID}/${IMAGE_NAME}
 ```

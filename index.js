@@ -1,7 +1,9 @@
 const PROTO_PATH = "./helloworld.proto";
 const grpc = require("grpc");
 const protoLoader = require("@grpc/proto-loader");
+const HOST = process.env.GRPC_HOST || "0.0.0.0";
 const PORT = process.env.GRPC_SERVER_PORT || 50051;
+const googleJwt = require('./google-jwt.js');
 
 const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
   keepCase: true,
@@ -12,21 +14,27 @@ const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
 });
 const hello_proto = grpc.loadPackageDefinition(packageDefinition);
 
-function sayHello(call, callback) {
-  callback(null, { message: "Hello " + call.request.name });
+sayHello = (call, callback) => {
+  let token = call.metadata._internal_repr.token[0];
+  console.info(token);
+  googleJwt.verifyToken(token)
+    .then(ticket => {
+      console.info(`sayHello ticket: ${JSON.stringify(ticket)}`);
+      callback(null, { message: "Hello " + call.request.name });
+    }); 
 }
 
-function main() {
+main = () => {
   var server = new grpc.Server();
   server.addService(hello_proto.Hello.service, { 
     sayHello: sayHello 
   });
   server.bind(
-    `${process.env.GRPC_HOST || "0.0.0.0"}:${PORT}`,
+    `${HOST}:${PORT}`,
     grpc.ServerCredentials.createInsecure()
   );
   server.start();
-  console.info(`started service on port: ${PORT}`);
+  console.info(`started service host: ${HOST} on port: ${PORT}`);
 }
 
 main();
