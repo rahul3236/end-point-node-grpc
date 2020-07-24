@@ -1,6 +1,6 @@
-const PROTO_PATH = "./helloworld.proto";
+const PROTO_PATH = './helloworld.proto';
 const grpc = require("grpc");
-const protoLoader = require("@grpc/proto-loader");
+const protoLoader = require('@grpc/proto-loader');
 const HOST = process.env.GRPC_HOST || "0.0.0.0";
 const PORT = process.env.GRPC_SERVER_PORT || 50051;
 const googleJwt = require('./google-jwt.js');
@@ -14,13 +14,27 @@ const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
 });
 const hello_proto = grpc.loadPackageDefinition(packageDefinition);
 
+function formatJwt(token) {
+  if (token.lenght == 0) {
+    const msg = 'Missing JWT';
+    console.error(msg);
+    throw msg;
+  }
+  let formattedToken = JSON.parse(token[0].split(" ")[1]);
+  console.info("split", formattedToken.id_token);
+  return formattedToken.id_token;
+}
+
+
 sayHello = (call, callback) => {
-  let token = call.metadata._internal_repr.token[0];
+  let token = formatJwt(call.metadata._internal_repr.token);
   console.info(token);
   googleJwt.verifyToken(token)
     .then(ticket => {
       console.info(`sayHello ticket: ${JSON.stringify(ticket)}`);
-      callback(null, { message: "Hello " + call.request.name });
+      callback(null, { 
+        message: `Hello ${call.request.name}` 
+      });
     }); 
 }
 
