@@ -15,7 +15,7 @@ const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
 const hello_proto = grpc.loadPackageDefinition(packageDefinition);
 
 function formatJwt(token) {
-  if (token.lenght == 0) {
+  if (!token || token.lenght == 0) {
     const msg = 'Missing JWT';
     console.error(msg);
     throw msg;
