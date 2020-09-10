@@ -1,5 +1,6 @@
 const PROTO_PATH = "./helloworld.proto";
 const grpc = require("grpc");
+const fs = require("fs");
 const protoLoader = require("@grpc/proto-loader");
 const HOST = process.env.GRPC_HOST || "0.0.0.0";
 const PORT = process.env.GRPC_SERVER_PORT || 50051;
@@ -12,6 +13,18 @@ const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
   defaults: true,
   oneofs: true,
 });
+
+let credentials = grpc.ServerCredentials.createSsl(
+  fs.readFileSync("./server_certs/ca_bundle.crt"),
+  [
+    {
+      cert_chain: fs.readFileSync("./server_certs/certificate.crt"),
+      private_key: fs.readFileSync("./server_certs/private.key"),
+    },
+  ],
+  true
+);
+
 const hello_proto = grpc.loadPackageDefinition(packageDefinition);
 
 sayHello = (call, callback) => {
@@ -28,7 +41,7 @@ main = () => {
   server.addService(hello_proto.Hello.service, {
     sayHello: sayHello,
   });
-  server.bind(`${HOST}:${PORT}`, grpc.ServerCredentials.createInsecure());
+  server.bind(`${HOST}:${PORT}`, credentials);
   server.start();
   console.info(`started service host: ${HOST} on port: ${PORT}`);
 };
