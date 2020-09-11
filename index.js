@@ -1,4 +1,4 @@
-const PROTO_PATH = "./helloworld.proto";
+const PROTO_PATH = './helloworld.proto';
 const grpc = require("grpc");
 const fs = require("fs");
 const protoLoader = require("@grpc/proto-loader");
@@ -26,6 +26,18 @@ let credentials = grpc.ServerCredentials.createSsl(
 );
 
 const hello_proto = grpc.loadPackageDefinition(packageDefinition);
+
+function formatJwt(token) {
+  if (!token || token.lenght == 0) {
+    const msg = 'Missing JWT';
+    console.error(msg);
+    throw msg;
+  }
+  let formattedToken = JSON.parse(token[0].split(" ")[1]);
+  console.info("split", formattedToken.id_token);
+  return formattedToken.id_token;
+}
+
 
 sayHello = (call, callback) => {
   let token = formatJwt(call.metadata._internal_repr.token);

@@ -15,6 +15,7 @@
 * Run `sudo docker run -d --rm -p 50051:50051 grpc-endpoint` to run the container
 * Publish to GCP Container Registry:
 ```
+sudo docker build -t gke-grpc-end-point .
 PROJECT_ID=level01
 IMAGE_NAME=grpc-endpoint
 docker tag ${IMAGE_NAME} gcr.io/${PROJECT_ID}/${IMAGE_NAME}
